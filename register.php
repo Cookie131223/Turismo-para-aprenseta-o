@@ -1,63 +1,25 @@
 <?php
-session_start(); // Inicia a sessão para redirecionar após o registro
-require_once 'includes/Database.php'; // Inclui a classe de banco de dados
-require_once 'includes/Cliente.php'; // Inclui a classe Cliente
+session_start();
+require_once 'includes/Database.php';
+require_once 'includes/Cliente.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome = $_POST['nome'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $senha = $_POST['senha'] ?? '';
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') { header('Location: registrar.html'); exit(); }
 
-    // Validação básica (você pode adicionar validações mais robustas)
-    if (empty($nome) || empty($email) || empty($senha)) {
-        header("Location: registrar.html?erro=campos_vazios");
-        exit();
-    }
+$nome=trim($_POST['nome']??'');
+$email=trim($_POST['email']??'');
+$senha=$_POST['senha']??'';
 
-    $database = new Database();
-    $db = $database->getConnection();
-
-    // Verificar se o e-mail já está em uso
-    $query_check_email = "SELECT id FROM clientes WHERE email = :email LIMIT 0,1";
-    $stmt_check_email = $db->prepare($query_check_email);
-    $stmt_check_email->bindParam(':email', $email);
-    $stmt_check_email->execute();
-
-    if ($stmt_check_email->rowCount() > 0) {
-        header("Location: registrar.html?erro=email_ja_cadastrado");
-        exit();
-    }
-
-    // Criar uma instância da classe Cliente
-    // Nota: CPF e Telefone não estão no formulário de registro atual, então usei valores padrão.
-    // Você precisaria adicioná-los ao formulário se quisesse coletá-los.
-    $novoCliente = new Cliente($nome, $email, $senha, '00000000000', '00000000000');
-
-    // Inserir o novo cliente no banco de dados
-    $query_insert = "INSERT INTO clientes (nome, email, senha) VALUES (:nome, :email, :senha)";
-    $stmt_insert = $db->prepare($query_insert);
-
-    // Bind dos parâmetros
-    $stmt_insert->bindParam(':nome', $nome);
-    $stmt_insert->bindParam(':email', $email);
-    
-// A senha é hashada dentro da classe Cliente
-// Usando o método getSenhaHash() da classe Cliente
-$hashedSenha = $novoCliente->getSenhaHash();
-$stmt_insert->bindParam(':senha', $hashedSenha);
-
-
-    if ($stmt_insert->execute()) {
-        // Registro bem-sucedido, redirecionar para a página de login
-        header("Location: login.html?cadastro=sucesso");
-        exit();
-    } else {
-        header("Location: registrar.html?erro=falha_cadastro");
-        exit();
-    }
-} else {
-    // Redireciona se não for um POST
-    header("Location: registrar.html");
-    exit();
+if($nome==='' || !filter_var($email,FILTER_VALIDATE_EMAIL) || strlen($senha)<6){
+    header('Location: registrar.html?erro=dados_invalidos'); exit();
 }
-?>
+
+$db=(new Database())->getConnection();
+$stmt=$db->prepare('SELECT id FROM clientes WHERE email=:email LIMIT 1');
+$stmt->execute([':email'=>$email]);
+if($stmt->fetch()){ header('Location: registrar.html?erro=email_ja_cadastrado'); exit(); }
+
+$cliente=new Cliente($nome,$email,$senha);
+$stmt=$db->prepare('INSERT INTO clientes (nome,email,senha,role) VALUES (:nome,:email,:senha,\'user\')');
+$stmt->execute([':nome'=>$nome,':email'=>$email,':senha'=>$cliente->getSenhaHash()]);
+header('Location: login.html?cadastro=sucesso');
+exit();

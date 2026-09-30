@@ -1,104 +1,19 @@
 <?php
 session_start();
-require_once 'includes/check_admin.php'; // Security check
+require_once 'includes/check_admin.php';
 require_once 'includes/Database.php';
 
-$database = new Database();
-$db = $database->getConnection();
-
-// Fetch all destinations to manage them
-$stmt_destinos = $db->query("SELECT * FROM destinos ORDER BY nome ASC");
-$destinos = $stmt_destinos->fetchAll(PDO::FETCH_ASSOC);
-
-// Fetch all reservations to monitor them
-$stmt_reservas = $db->query("SELECT r.id, c.nome as cliente_nome, r.destino_nome, r.data_reserva, r.status FROM reservas r JOIN clientes c ON r.cliente_id = c.id ORDER BY r.data_reserva DESC");
-$reservas = $stmt_reservas->fetchAll(PDO::FETCH_ASSOC);
+$db=(new Database())->getConnection();
+$destinos=$db->query('SELECT * FROM destinos ORDER BY nome')->fetchAll();
+$reservas=$db->query('SELECT r.*, c.nome AS cliente_nome FROM reservas r JOIN clientes c ON c.id=r.cliente_id ORDER BY r.data_reserva DESC')->fetchAll();
+$totalReservas=count($reservas);
+$totalConfirmadas=count(array_filter($reservas,fn($r)=>$r['status']==='confirmada'));
+$faturamento=array_sum(array_map(fn($r)=>$r['status']==='confirmada'?(float)$r['valor']:0,$reservas));
 ?>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="Css/main.css">
-    <link rel="stylesheet" href="Css/admin.css">
-</head>
-<body>
-    <header>
-        <nav style="display: flex; justify-content: space-between; align-items: center; padding: 1rem;">
-            <a href="index.php">Ver Site</a>
-            <a href="logout.php">Sair</a>
-        </nav>
-    </header>
-
-    <main class="admin-container">
-        <h1>Painel do Administrador</h1>
-
-        <section class="admin-section">
-            <h2>Gerenciar Destinos</h2>
-
-            <form action="includes/admin_actions.php" method="POST" class="admin-form">
-                <h3>Adicionar Novo Destino</h3>
-                <input type="hidden" name="action" value="add_destino">
-                <div class="form-group"><label>Nome</label><input type="text" name="nome" required></div>
-                <div class="form-group"><label>País</label><input type="text" name="pais" required></div>
-                <div class="form-group"><label>Descrição</label><textarea name="descricao" required></textarea></div>
-                <div class="form-group"><label>Preço (ex: 4500.00)</label><input type="text" name="preco" required pattern="[0-9]+(\.[0-9]{2})?"></div>
-                <div class="form-group"><label>URL da Imagem</label><input type="text" name="imagem" required></div>
-                <button type="submit" class="btn">Adicionar Destino</button>
-            </form>
-
-            <div class="admin-table">
-                <h3>Destinos Atuais</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Preço</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($destinos as $destino): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($destino['nome']) ?></td>
-                            <td>R$ <?= number_format($destino['preco'], 2, ',', '.') ?></td>
-                            <td class="action-links">
-                                <a href="includes/admin_actions.php?action=delete_destino&id=<?= $destino['id'] ?>" onclick="return confirm('Tem certeza que deseja excluir?');">Excluir</a>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <hr>
-
-        <section class="admin-section">
-            <h2>Acompanhar Pedidos (Reservas)</h2>
-            <div class="admin-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Cliente</th>
-                            <th>Destino</th>
-                            <th>Data da Reserva</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($reservas as $reserva): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($reserva['cliente_nome']) ?></td>
-                            <td><?= htmlspecialchars($reserva['destino_nome']) ?></td>
-                            <td><?= date('d/m/Y H:i', strtotime($reserva['data_reserva'])) ?></td>
-                            <td><?= htmlspecialchars(ucfirst($reserva['status'])) ?></td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-    </main>
-</body>
-</html>
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Painel administrativo | Explorer</title><link rel="stylesheet" href="css/main.css"></head><body>
+<header class="site-header"><div class="container nav"><a class="brand" href="index.php">Explorer<span>.</span></a><nav class="nav-links"><a href="index.php">Ver site</a><a href="logout.php">Sair</a></nav></div></header>
+<main class="container section"><p class="eyebrow">Gestão</p><h1>Painel administrativo</h1><div class="kpis"><div class="kpi"><strong><?= count($destinos) ?></strong><span class="muted">destinos</span></div><div class="kpi"><strong><?= $totalReservas ?></strong><span class="muted">reservas</span></div><div class="kpi"><strong>R$ <?= number_format($faturamento,2,',','.') ?></strong><span class="muted">reservas confirmadas</span></div></div>
+<section class="panel"><h2>Novo destino</h2><form class="form-grid" action="includes/admin_actions.php" method="post"><input type="hidden" name="action" value="add_destino"><div class="form-group"><label>Nome</label><input name="nome" required></div><div class="form-group"><label>País</label><input name="pais" required></div><div class="form-group full"><label>Descrição</label><textarea name="descricao" required></textarea></div><div class="form-group"><label>Preço</label><input type="number" min="0" step="0.01" name="preco" required></div><div class="form-group"><label>URL da imagem</label><input type="url" name="imagem" required></div><div class="form-group full"><button class="btn" type="submit">Adicionar destino</button></div></form></section>
+<section class="panel"><h2>Destinos cadastrados</h2><div class="table-wrap"><table><thead><tr><th>Destino</th><th>País</th><th>Preço</th><th>Ação</th></tr></thead><tbody><?php foreach($destinos as $d): ?><tr><td><?= htmlspecialchars($d['nome']) ?></td><td><?= htmlspecialchars($d['pais']) ?></td><td>R$ <?= number_format($d['preco'],2,',','.') ?></td><td><a class="btn small danger" href="includes/admin_actions.php?action=delete_destino&id=<?= $d['id'] ?>" onclick="return confirm('Excluir este destino?')">Excluir</a></td></tr><?php endforeach; ?></tbody></table></div></section>
+<section class="panel"><h2>Gerenciar reservas</h2><div class="table-wrap"><table><thead><tr><th>Cliente</th><th>Destino</th><th>Valor</th><th>Status</th><th>Pagamento</th><th>Atualizar</th></tr></thead><tbody><?php foreach($reservas as $r): ?><tr><td><?= htmlspecialchars($r['cliente_nome']) ?></td><td><?= htmlspecialchars($r['destino_nome']) ?></td><td>R$ <?= number_format($r['valor'],2,',','.') ?></td><td><span class="badge <?= htmlspecialchars($r['status']) ?>"><?= htmlspecialchars(str_replace('_',' ',ucfirst($r['status']))) ?></span></td><td><?= htmlspecialchars($r['forma_pagamento']?:'—') ?></td><td><form action="includes/admin_actions.php" method="post" class="card-actions"><input type="hidden" name="action" value="update_status"><input type="hidden" name="reserva_id" value="<?= $r['id'] ?>"><select name="status"><option value="aguardando_pagamento">Aguardando pagamento</option><option value="confirmada">Confirmada</option><option value="concluida">Concluída</option><option value="cancelada">Cancelada</option></select><button class="btn small" type="submit">Salvar</button></form></td></tr><?php endforeach; ?></tbody></table></div></section>
+</main></body></html>
