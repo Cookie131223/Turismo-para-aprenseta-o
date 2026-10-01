@@ -29,3 +29,19 @@ if(search&&cards.length){
     if(empty) empty.hidden=visible!==0;
   });
 }
+
+const carousel=document.querySelector('.destinations-carousel');
+const prevBtn=document.querySelector('.carousel-btn.prev');
+const nextBtn=document.querySelector('.carousel-btn.next');
+if(carousel&&prevBtn&&nextBtn){
+  const step=()=>Math.max(280,Math.min(360,carousel.clientWidth*.82));
+  const updateButtons=()=>{
+    prevBtn.disabled=carousel.scrollLeft<=4;
+    nextBtn.disabled=carousel.scrollLeft+carousel.clientWidth>=carousel.scrollWidth-4;
+  };
+  prevBtn.addEventListener('click',()=>carousel.scrollBy({left:-step(),behavior:'smooth'}));
+  nextBtn.addEventListener('click',()=>carousel.scrollBy({left:step(),behavior:'smooth'}));
+  carousel.addEventListener('scroll',updateButtons,{passive:true});
+  window.addEventListener('resize',updateButtons);
+  setTimeout(updateButtons,0);
+}
