@@ -6,8 +6,8 @@ $db=(new Database())->getConnection();
 $stmt=$db->prepare('SELECT * FROM reservas WHERE cliente_id=:id ORDER BY data_reserva DESC');
 $stmt->execute([':id'=>$_SESSION['user_id']]); $reservas=$stmt->fetchAll();
 ?>
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Minhas viagens | Explorer</title><link rel="stylesheet" href="css/main.css"></head><body>
-<header class="site-header"><div class="container nav"><a class="brand" href="index.php">Explorer<span>.</span></a><nav class="nav-links"><a href="index.php#destinos">Destinos</a><a href="logout.php">Sair</a></nav></div></header>
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Minhas viagens | Tripora.com</title><link rel="stylesheet" href="css/main.css"></head><body>
+<header class="site-header"><div class="container nav"><a class="brand" href="index.php">Tripora<span>.com</span></a><nav class="nav-links"><a href="index.php#destinos">Destinos</a><a href="logout.php">Sair</a></nav></div></header>
 <main class="container section"><div class="section-head"><div><p class="eyebrow">Área do viajante</p><h1>Minhas viagens</h1><p class="muted">Olá, <?= htmlspecialchars($_SESSION['user_name']) ?>. Acompanhe, pague ou cancele suas reservas.</p></div><a class="btn" href="index.php#destinos">Nova reserva</a></div>
 <?php if(isset($_GET['sucesso'])): ?><div class="notice">Operação realizada com sucesso.</div><?php endif; ?>
 <div class="table-wrap"><table><thead><tr><th>Destino</th><th>Valor</th><th>Reserva</th><th>Pagamento</th><th>Status</th><th>Ações</th></tr></thead><tbody>
