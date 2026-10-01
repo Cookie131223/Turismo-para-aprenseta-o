@@ -34,7 +34,11 @@ $destinos=array_map(fn($d)=>new Destino((int)$d['id'],$d['nome'],$d['pais'],$d['
 <section class="container section" id="destinos">
 <div class="section-head"><div><p class="eyebrow">Destinos</p><h2>Escolha sua próxima viagem</h2></div><p class="muted">Encontre seu destino e reserve em poucos passos.</p></div>
 <div class="search-box"><span class="search-icon">⌕</span><input id="destinationSearch" type="search" placeholder="Buscar por destino ou país..." aria-label="Buscar destinos"><span id="resultCount" class="search-count"><?= count($destinos) ?> opções</span></div>
-<div class="grid" id="destinationGrid"><?php foreach($destinos as $destino){ echo $destino->mostrarCard(); } ?></div>
+<div class="carousel-shell">
+  <button class="carousel-btn prev" type="button" aria-label="Destino anterior">‹</button>
+  <div class="destinations-carousel" id="destinationGrid"><?php foreach($destinos as $destino){ echo $destino->mostrarCard(); } ?></div>
+  <button class="carousel-btn next" type="button" aria-label="Próximo destino">›</button>
+</div>
 <p id="emptySearch" class="empty-search" hidden>Nenhum destino encontrado. Tente outro nome ou país.</p>
 </section>
 <section class="container section benefits-section"><div class="section-head"><div><p class="eyebrow">Por que Tripora?</p><h2>Uma experiência simples do início ao fim</h2></div></div><div class="benefits-grid">
