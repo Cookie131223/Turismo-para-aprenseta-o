@@ -10,8 +10,8 @@ $stmt->execute([':id'=>$id, ':cliente_id'=>$_SESSION['user_id']]);
 $reserva = $stmt->fetch();
 if (!$reserva) { header('Location: minhas_reservas.php'); exit(); }
 ?>
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pagamento | Explorer</title><link rel="stylesheet" href="css/main.css"></head>
-<body><header class="site-header"><div class="container nav"><a class="brand" href="index.php">Explorer<span>.</span></a><div class="nav-links"><a href="minhas_reservas.php">Minhas viagens</a></div></div></header>
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pagamento | Tripora.com</title><link rel="stylesheet" href="css/main.css"></head>
+<body><header class="site-header"><div class="container nav"><a class="brand" href="index.php">Tripora<span>.com</span></a><div class="nav-links"><a href="minhas_reservas.php">Minhas viagens</a></div></div></header>
 <main class="container section"><div class="panel" style="max-width:680px"><span class="eyebrow">Checkout demonstrativo</span><h1>Finalizar pagamento</h1><p class="muted">Fluxo acadêmico simulado — nenhuma cobrança real será realizada.</p>
 <div class="panel"><h3><?= htmlspecialchars($reserva['destino_nome']) ?></h3><p class="price">R$ <?= number_format($reserva['valor'],2,',','.') ?></p></div>
 <?php if ($reserva['status']==='aguardando_pagamento'): ?>
