@@ -48,5 +48,5 @@ $destinos=array_map(fn($d)=>new Destino((int)$d['id'],$d['nome'],$d['pais'],$d['
 </div></section>
 <section class="container section"><div class="panel"><div class="kpis"><div class="kpi"><strong><?= count($destinos) ?></strong><span class="muted">destinos disponíveis</span></div><div class="kpi"><strong>3 etapas</strong><span class="muted">reservar, pagar e acompanhar</span></div><div class="kpi"><strong>100%</strong><span class="muted">fluxo demonstrável</span></div></div></div></section>
 </main>
-<footer class="footer"><div class="container"><strong>Tripora.com</strong><p>Projeto acadêmico desenvolvido por Guilherme Lima Zamberse da Silva, Breno Martinho Denis e Pedro Lucas Possidonio dos Santos.</p></div></footer>
+<footer class="footer"><div class="container"><strong>Tripora.com</strong><p>Projeto acadêmico desenvolvido por Guilherme Lima Zamberse da Silva, Breno Martinho Denis, Pedro Lucas Possidonio dos Santos e Pedro dos Reis Escudeiro.</p></div></footer>
 <script src="js/main.js"></script></body></html>
