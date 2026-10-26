@@ -26,7 +26,7 @@ foreach ($destinosPadrao as $d) {
 $rows=$db->query('SELECT * FROM destinos ORDER BY id ASC')->fetchAll();
 $destinos=array_map(fn($d)=>new Destino((int)$d['id'],$d['nome'],$d['pais'],$d['descricao'],(float)$d['preco'],$d['imagem']),$rows);
 ?>
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Tripora.com - reserve, acompanhe e gerencie suas viagens em um só lugar"><meta name="theme-color" content="#07111f"><title>Tripora.com</title><link rel="stylesheet" href="css/main.css"></head>
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Tripora.com - reserve, acompanhe e gerencie suas viagens em um só lugar"><meta name="theme-color" content="#07111f"><title>Tripora.com</title><link rel="stylesheet" href="css/main.css"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="assets/3d/efeitos3d.css"><script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script></head>
 <body>
 <header class="site-header"><div class="container nav"><a class="brand" href="index.php">Tripora<span>.com</span></a><button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span><span></span></button><nav class="nav-links"><a href="#destinos">Destinos</a><?php if(isset($_SESSION['user_id'])): ?><a href="minhas_reservas.php">Minhas viagens</a><?php endif; ?><?php if(($_SESSION['user_role']??'')==='admin'): ?><a href="admin_dashboard.php">Admin</a><?php endif; ?><?php if(isset($_SESSION['user_id'])): ?><span class="muted">Olá, <?= htmlspecialchars($_SESSION['user_name']) ?></span><a href="logout.php">Sair</a><?php else: ?><a href="login.html">Entrar</a><a class="btn small" href="registrar.html">Criar conta</a><?php endif; ?></nav></div></header>
 <main>
@@ -42,11 +42,15 @@ $destinos=array_map(fn($d)=>new Destino((int)$d['id'],$d['nome'],$d['pais'],$d['
 <p id="emptySearch" class="empty-search" hidden>Nenhum destino encontrado. Tente outro nome ou país.</p>
 </section>
 <section class="container section benefits-section"><div class="section-head"><div><p class="eyebrow">Por que Tripora?</p><h2>Uma experiência simples do início ao fim</h2></div></div><div class="benefits-grid">
-<article class="benefit"><span class="benefit-icon">01</span><h3>Escolha</h3><p class="muted">Compare destinos em uma interface clara e responsiva.</p></article>
-<article class="benefit"><span class="benefit-icon">02</span><h3>Reserve</h3><p class="muted">Crie sua reserva em poucos cliques e acompanhe o status.</p></article>
-<article class="benefit"><span class="benefit-icon">03</span><h3>Gerencie</h3><p class="muted">Pagamento simulado, cancelamento e histórico em um só lugar.</p></article>
+<article class="benefit card-tilt"><span class="benefit-icon">01</span><h3>Escolha</h3><p class="muted">Compare destinos em uma interface clara e responsiva.</p></article>
+<article class="benefit card-tilt"><span class="benefit-icon">02</span><h3>Reserve</h3><p class="muted">Crie sua reserva em poucos cliques e acompanhe o status.</p></article>
+<article class="benefit card-tilt"><span class="benefit-icon">03</span><h3>Gerencie</h3><p class="muted">Pagamento simulado, cancelamento e histórico em um só lugar.</p></article>
 </div></section>
 <section class="container section"><div class="panel"><div class="kpis"><div class="kpi"><strong><?= count($destinos) ?></strong><span class="muted">destinos disponíveis</span></div><div class="kpi"><strong>3 etapas</strong><span class="muted">reservar, pagar e acompanhar</span></div><div class="kpi"><strong>100%</strong><span class="muted">fluxo demonstrável</span></div></div></div></section>
 </main>
 <footer class="footer"><div class="container"><strong>Tripora.com</strong><p>Projeto acadêmico desenvolvido por Guilherme Lima Zamberse da Silva, Breno Martinho Denis, Pedro Lucas Possidonio dos Santos e Pedro dos Reis Escudeiro.</p></div></footer>
-<script src="js/main.js"></script></body></html>
+<script src="js/main.js"></script>
+<script type="module" src="assets/3d/hero3d.js"></script>
+<script type="module" src="assets/3d/particulas.js"></script>
+<script type="module" src="assets/3d/cards-tilt.js"></script>
+</body></html>

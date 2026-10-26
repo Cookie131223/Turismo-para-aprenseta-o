@@ -1,0 +1,33 @@
+/* Efeitos 3D do Tripora (globo, cards inclinando, partículas e modelo .glb). */
+
+/* ---------- globo no card do topo ---------- */
+.hero-card.globo-3d{position:relative;overflow:hidden;isolation:isolate;background:radial-gradient(circle at 50% 38%,rgba(57,208,255,.16),rgba(124,92,255,.08) 38%,transparent 62%),linear-gradient(180deg,#0d1f35,#07111f)}
+.hero-card.globo-3d .globo-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0;pointer-events:none;opacity:0;transition:opacity .8s ease}
+.hero-card.globo-3d.globo-pronto .globo-canvas{opacity:1}
+.hero-card.globo-3d::after{content:"";position:absolute;inset:auto 0 0 0;height:38%;background:linear-gradient(180deg,transparent,rgba(7,17,31,.92));z-index:1;pointer-events:none}
+.hero-card.globo-3d>div{position:relative;z-index:2}
+.hero-card.globo-3d{min-height:480px}
+@media(max-width:980px){.hero-card.globo-3d{min-height:470px}}
+@media(max-width:720px){.hero-card.globo-3d{min-height:450px}}
+@media(max-width:480px){.hero-card.globo-3d{min-height:430px}}
+
+/* ---------- cards inclinando ---------- */
+.card-tilt{position:relative;transform-style:preserve-3d;will-change:transform}
+.card-tilt.tilt-ativo{transition:transform .08s linear,box-shadow .22s ease,border-color .22s ease}
+.card-tilt .tilt-brilho{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .25s ease;background:radial-gradient(circle at var(--brilho-x,50%) var(--brilho-y,50%),rgba(255,255,255,.18),rgba(57,208,255,.06) 32%,transparent 60%);z-index:3}
+.card-tilt.tilt-ativo .tilt-brilho{opacity:1}
+
+/* ---------- partículas de fundo ---------- */
+.particulas-fundo{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;pointer-events:none;display:block}
+
+/* ---------- modelo .glb ---------- */
+.modelo-3d{position:relative;height:150px;margin:-6px auto 6px;max-width:320px;cursor:grab;touch-action:none}
+.modelo-3d:active{cursor:grabbing}
+.modelo-3d canvas{width:100%;height:100%;display:block}
+.modelo-carregando{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:.85rem}
+.modelo-3d.modelo-sem-3d{height:auto;cursor:default}
+.modelo-3d.modelo-sem-3d::before{content:"✈";display:block;text-align:center;font-size:2.6rem;color:var(--accent);padding:6px 0}
+
+@media (prefers-reduced-motion: reduce){
+  .card-tilt,.card-tilt.tilt-ativo{transition:none}
+}
