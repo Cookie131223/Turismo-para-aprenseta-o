@@ -27,6 +27,11 @@ class Database {
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES => false
         ]);
+
+        // Cria automaticamente as tabelas/colunas dos recursos novos (favoritos, avaliações, cupons...).
+        require_once __DIR__ . '/Migracoes.php';
+        try { Migracoes::garantir($this->connection); }
+        catch (Throwable $e) { error_log('Tripora: falha ao atualizar o banco: ' . $e->getMessage()); }
     }
 
     public function getConnection(): PDO {

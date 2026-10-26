@@ -24,11 +24,28 @@ three.js puro (versão 0.170.0), carregado pelo CDN jsDelivr via importmap. Não
 - As animações pausam quando saem da tela ou quando a aba fica oculta.
 - O pixel ratio é limitado a 2.
 
-## Voltar para a versão sem 3D
-A versão anterior está marcada com a tag `antes-3d`:
+## Voltar para versões anteriores
+Há dois pontos de retorno guardados como branches no GitHub:
+- `antes-3d`: o site original, sem nenhum efeito 3D;
+- `antes-recursos`: com o primeiro 3D, mas sem os recursos de outubro (página do destino, cupons, cartão de embarque etc.).
 
 ```bash
-git revert --no-edit antes-3d..HEAD   # desfaz os commits do 3D e mantém o histórico (recomendado)
-# ou, apagando o 3D do histórico:
-git reset --hard antes-3d && git push --force
+git fetch origin
+git reset --hard origin/antes-recursos && git push --force origin main   # ou origin/antes-3d
 ```
+
+## Recursos adicionados depois (outubro/2026)
+
+| Arquivo | O que faz |
+|---|---|
+| `globo3d.js` | Globo reutilizável (pinos, rotas, avião, clique nos pinos) usado em todas as páginas |
+| `hero3d.js` | Globo da página inicial: tocar num pino abre um mini card com foto, preço, "Ver destino" e "Reservar" |
+| `rota3d.js` | Mini globo com a rota São Paulo → destino (página do destino e reserva) |
+| `mapa-viagens.js` | Globo de "Minhas viagens" (verde = pago, amarelo = aguardando) |
+| `panorama.js` | Vista panorâmica da foto do destino (arrastar ou mover o celular) |
+| `transicao.js` | Aviãozinho cruzando a tela ao clicar em "Reservar" |
+| `particulas.js` | Agora muda as cores conforme o horário (dia, pôr do sol, noite) |
+
+Arquivos fora desta pasta: `destino.php`, `comparar.php`, `embarque.php`, `favoritar.php`, `avaliar.php`, `aplicar_cupom.php`, `includes/Migracoes.php`, `includes/DestinoInfo.php` (coordenadas, moeda, fuso e melhor época de cada destino), `includes/layout.php`, `css/recursos.css` e `js/` (`ao-vivo.js`, `favoritos.js`, `comparar-selecao.js`, `reserva.js`, `embarque.js`, `barras3d.js`).
+
+Voltar para antes destes recursos: branch `antes-recursos` no GitHub.

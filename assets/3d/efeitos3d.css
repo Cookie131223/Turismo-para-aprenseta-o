@@ -5,7 +5,7 @@
 .hero-card.globo-3d .globo-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0;pointer-events:none;opacity:0;transition:opacity .8s ease}
 .hero-card.globo-3d.globo-pronto .globo-canvas{opacity:1}
 .hero-card.globo-3d::after{content:"";position:absolute;inset:auto 0 0 0;height:38%;background:linear-gradient(180deg,transparent,rgba(7,17,31,.92));z-index:1;pointer-events:none}
-.hero-card.globo-3d>div{position:relative;z-index:2}
+.hero-card.globo-3d>div:not(.globo-popup){position:relative;z-index:2}
 .hero-card.globo-3d{min-height:480px}
 @media(max-width:980px){.hero-card.globo-3d{min-height:470px}}
 @media(max-width:720px){.hero-card.globo-3d{min-height:450px}}
@@ -31,3 +31,31 @@
 @media (prefers-reduced-motion: reduce){
   .card-tilt,.card-tilt.tilt-ativo{transition:none}
 }
+
+/* ---------- globos (genérico: reserva, destino, minhas viagens) ---------- */
+.globo-3d .globo-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0;pointer-events:none;opacity:0;transition:opacity .8s ease}
+.globo-3d.globo-pronto .globo-canvas{opacity:1}
+
+/* ---------- mini card ao tocar num pino do globo do topo ---------- */
+.globo-popup{position:absolute;top:14px;right:14px;width:min(270px,calc(100% - 28px));z-index:4;background:rgba(15,29,46,.95);border:1px solid rgba(57,208,255,.3);border-radius:18px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.45);backdrop-filter:blur(10px);animation:popupEntra .35s cubic-bezier(.2,.8,.2,1)}
+.globo-popup img{width:100%;height:110px;object-fit:cover}
+.globo-popup-corpo{padding:12px 14px 14px}
+.globo-popup h3{margin:2px 0 4px;font-size:1.15rem}
+.globo-popup .eyebrow{margin:0;font-size:.7rem}
+.globo-popup .muted{margin:0;font-size:.8rem}
+.globo-popup .price{margin:8px 0 10px;font-size:1.15rem}
+.globo-popup .price-label{display:block;font-size:.7rem;font-weight:600}
+.globo-popup-acoes{display:flex;gap:8px}.globo-popup-acoes .btn{flex:1;padding:8px 10px;min-height:38px;font-size:.85rem}
+.globo-popup-fechar{position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(7,17,31,.75);color:#fff;font-size:1.1rem;cursor:pointer;z-index:2}
+.globo-dica{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:3;padding:6px 12px;border-radius:999px;background:rgba(7,17,31,.72);border:1px solid rgba(255,255,255,.12);font-size:.76rem;font-weight:700;color:var(--muted);white-space:nowrap;pointer-events:none;animation:dicaSome 1s ease 7s forwards}
+@keyframes popupEntra{from{opacity:0;transform:translateY(-8px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes dicaSome{to{opacity:0}}
+@media(max-width:720px){.globo-popup{left:12px;right:12px;top:12px;width:auto;display:grid;grid-template-columns:96px 1fr}.globo-popup img{height:100%;min-height:150px}}
+
+/* ---------- transição de avião ---------- */
+.voo-transicao{position:fixed;inset:0;z-index:9999;pointer-events:none;overflow:hidden;background:rgba(7,17,31,0);animation:vooEscurece .8s ease forwards}
+.voo-aviao{position:absolute;left:-120px;top:58%;filter:drop-shadow(0 0 18px rgba(57,208,255,.8));animation:vooCruza .78s cubic-bezier(.55,0,.35,1) forwards}
+.voo-rastro{position:absolute;left:0;top:calc(58% + 44px);height:3px;width:0;background:linear-gradient(90deg,transparent,rgba(57,208,255,.9));border-radius:3px;transform-origin:left center;transform:rotate(-14deg);animation:vooRastro .78s cubic-bezier(.55,0,.35,1) forwards}
+@keyframes vooCruza{0%{transform:translate(0,0) rotate(-14deg) scale(.8)}100%{transform:translate(calc(100vw + 240px),-28vh) rotate(-14deg) scale(1.15)}}
+@keyframes vooRastro{0%{width:0}100%{width:115vw}}
+@keyframes vooEscurece{60%{background:rgba(7,17,31,.35)}100%{background:rgba(7,17,31,.75)}}

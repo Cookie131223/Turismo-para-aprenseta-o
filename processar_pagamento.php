@@ -8,8 +8,14 @@ $forma = $_POST['forma_pagamento'] ?? '';
 $formas = ['pix','cartao','boleto'];
 if (!in_array($forma,$formas,true)) { header('Location: minhas_reservas.php?erro=pagamento'); exit(); }
 
+// localizador do cartão de embarque (6 letras/números, sem caracteres confusos)
+$alfabeto = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+$codigo = '';
+for ($i = 0; $i < 6; $i++) $codigo .= $alfabeto[random_int(0, strlen($alfabeto) - 1)];
+
 $db=(new Database())->getConnection();
-$stmt=$db->prepare("UPDATE reservas SET status='confirmada', forma_pagamento=:forma, data_pagamento=NOW() WHERE id=:id AND cliente_id=:cliente_id AND status='aguardando_pagamento'");
-$stmt->execute([':forma'=>$forma,':id'=>$id,':cliente_id'=>$_SESSION['user_id']]);
+$stmt=$db->prepare("UPDATE reservas SET status='confirmada', forma_pagamento=:forma, data_pagamento=NOW(), codigo=:codigo WHERE id=:id AND cliente_id=:cliente_id AND status='aguardando_pagamento'");
+$stmt->execute([':forma'=>$forma,':codigo'=>$codigo,':id'=>$id,':cliente_id'=>$_SESSION['user_id']]);
+if ($stmt->rowCount() > 0) { header('Location: embarque.php?id='.$id.'&novo=1'); exit(); }
 header('Location: minhas_reservas.php?sucesso=pagamento');
 exit();

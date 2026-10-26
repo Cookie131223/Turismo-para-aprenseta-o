@@ -16,7 +16,9 @@ CREATE TABLE IF NOT EXISTS destinos (
   pais VARCHAR(255) NOT NULL,
   descricao TEXT NOT NULL,
   preco DECIMAL(10,2) NOT NULL,
-  imagem VARCHAR(500) NOT NULL
+  imagem VARCHAR(500) NOT NULL,
+  lat DECIMAL(9,6) NULL,
+  lon DECIMAL(9,6) NULL
 );
 
 CREATE TABLE IF NOT EXISTS reservas (
@@ -29,9 +31,45 @@ CREATE TABLE IF NOT EXISTS reservas (
   status VARCHAR(50) DEFAULT 'aguardando_pagamento',
   forma_pagamento VARCHAR(50) NULL,
   data_pagamento DATETIME NULL,
+  data_ida DATE NULL,
+  data_volta DATE NULL,
+  viajantes INT NOT NULL DEFAULT 1,
+  cupom VARCHAR(40) NULL,
+  desconto DECIMAL(10,2) NOT NULL DEFAULT 0,
+  codigo VARCHAR(12) NULL,
   CONSTRAINT fk_reserva_cliente FOREIGN KEY (cliente_id) REFERENCES clientes(id),
   CONSTRAINT fk_reserva_destino FOREIGN KEY (destino_id) REFERENCES destinos(id)
 );
+
+-- Recursos novos (o site também cria estas tabelas sozinho, via includes/Migracoes.php)
+CREATE TABLE IF NOT EXISTS favoritos (
+  cliente_id INT NOT NULL,
+  destino_id INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (cliente_id, destino_id)
+);
+
+CREATE TABLE IF NOT EXISTS avaliacoes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  cliente_id INT NOT NULL,
+  destino_id INT NOT NULL,
+  nota INT NOT NULL,
+  comentario TEXT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE (cliente_id, destino_id)
+);
+
+CREATE TABLE IF NOT EXISTS cupons (
+  codigo VARCHAR(40) PRIMARY KEY,
+  percentual INT NOT NULL,
+  descricao VARCHAR(160) NOT NULL,
+  ativo INT NOT NULL DEFAULT 1
+);
+
+INSERT IGNORE INTO cupons (codigo, percentual, descricao, ativo) VALUES
+('TRIPORA10', 10, '10% de desconto em qualquer destino', 1),
+('BEMVINDO15', 15, '15% de desconto de boas-vindas', 1),
+('APRESENTACAO20', 20, '20% de desconto para a apresentação', 1);
 
 INSERT INTO destinos (nome,pais,descricao,preco,imagem) VALUES
 ('Dubai','Emirados Árabes Unidos','Arquitetura futurista, deserto e experiências premium.',5800.00,'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=900&q=80'),

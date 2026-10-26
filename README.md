@@ -11,13 +11,24 @@ Sistema acadêmico de turismo em **PHP + MySQL** preparado para apresentação.
 - Painel administrativo para destinos e status de reservas
 - Interface responsiva
 - Configuração por variáveis de ambiente
+- Globo 3D interativo na página inicial (toque num pino para ver o destino)
+- Página de cada destino com vista panorâmica, rota no globo, clima e hora local, conversor de moeda e avaliações
+- Reserva com calendário de ida/volta, número de viajantes e total calculado na hora
+- Cupons de desconto no pagamento (TRIPORA10, BEMVINDO15, APRESENTACAO20)
+- Cartão de embarque 3D após o pagamento, com download em imagem
+- "Minhas viagens" com globo das viagens, países, quilômetros e favoritos
+- Comparação de até 3 destinos lado a lado, com gráficos em 3D
+- Painel do admin com gráficos (2D/3D)
+- Efeitos: cards que inclinam com o mouse, partículas que mudam com o horário e transição de avião
 - Docker pronto para deploy
 
 ## Estrutura
 Os diretórios e referências usam nomes consistentes em minúsculo, como `css/` e `includes/`, para evitar problemas em servidores Linux case-sensitive.
 
 ## Banco de dados
-Importe `schema.sql` em um banco MySQL.
+Importe `schema.sql` em um banco MySQL. Em bancos já existentes, as tabelas e colunas novas (favoritos, avaliações, cupons, datas da viagem) são criadas automaticamente no primeiro acesso, por `includes/Migracoes.php`.
+
+Clima (Open-Meteo) e câmbio (open.er-api.com) são consultados direto do navegador, sem chave de API.
 
 Depois configure:
 ```

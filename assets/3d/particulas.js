@@ -3,7 +3,18 @@ import * as THREE from 'three';
 import { temWebGL, reduzMovimento, telaTouch, criarLaco, acompanharTamanho, texturaPonto } from './util3d.js';
 
 const QUANTIDADE = 1500;
-const CORES = ['#39d0ff', '#7c5cff', '#a7b5c7'];
+
+// Céu que muda com o horário de quem está vendo: dia, pôr do sol e noite.
+const hora = new Date().getHours();
+const PERIODO = hora >= 6 && hora < 17 ? 'dia' : hora >= 17 && hora < 19 ? 'por-do-sol' : hora >= 5 && hora < 6 ? 'amanhecer' : 'noite';
+const PALETAS = {
+  dia: { cores: ['#39d0ff', '#8be3ff', '#bfe9ff'], opacidade: 0.3 },
+  amanhecer: { cores: ['#ff9ec7', '#ffc24b', '#7c5cff'], opacidade: 0.32 },
+  'por-do-sol': { cores: ['#ff8a5c', '#ff5f9e', '#7c5cff', '#ffc24b'], opacidade: 0.34 },
+  noite: { cores: ['#ffffff', '#a7b5c7', '#7c5cff', '#39d0ff'], opacidade: 0.4 },
+};
+const CORES = PALETAS[PERIODO].cores;
+document.documentElement.classList.add('ceu-' + PERIODO);
 
 if (temWebGL()) iniciar();
 
@@ -36,7 +47,7 @@ function iniciar() {
 
   // flutuação feita na GPU (shader), para não pesar o processador
   const material = new THREE.ShaderMaterial({
-    uniforms: { tempo: { value: 0 }, mapa: { value: texturaPonto(THREE) }, opacidade: { value: 0.32 }, tamanho: { value: 70 * Math.min(window.devicePixelRatio || 1, 2) } },
+    uniforms: { tempo: { value: 0 }, mapa: { value: texturaPonto(THREE) }, opacidade: { value: PALETAS[PERIODO].opacidade }, tamanho: { value: 70 * Math.min(window.devicePixelRatio || 1, 2) } },
     vertexShader: `
       attribute vec3 color; attribute float fase; uniform float tempo; uniform float tamanho; varying vec3 vCor;
       void main(){
