@@ -6,14 +6,16 @@ three.js puro (versão 0.170.0), carregado pelo CDN jsDelivr via importmap. Não
 |---|---|---|
 | `hero3d.js` | Globo com os continentes em pontos, pinos nos destinos, rotas saindo de São Paulo e um aviãozinho | `index.php` (card do topo) |
 | `cards-tilt.js` | Inclinação 3D (máx. 8°) com brilho que segue o cursor, em todo elemento `.card-tilt` | `index.php` (cards de destino e "Por que Tripora?") |
-| `particulas.js` | Fundo com 1500 partículas que flutuam e reagem de leve ao mouse | `index.php`, `login.html`, `registrar.html` |
-| `modelo.js` | Carrega um `.glb`, centraliza, ajusta a escala e deixa girar com o mouse/dedo | `login.html`, `registrar.html` |
+| `particulas.js` | Fundo com 1500 partículas que flutuam e reagem de leve ao mouse | `index.php` |
+| `modelo.js` | Carrega um `.glb`, centraliza, ajusta a escala e deixa girar com o mouse/dedo | `destino.php`, `login.html`, `registrar.html` |
 | `util3d.js` | Funções comuns: checagem de WebGL, movimento reduzido, pausa fora da tela, redimensionamento | todos |
 | `efeitos3d.css` | Estilos dos efeitos | páginas acima |
 | `modelos/modelo.glb` | Avião low-poly nas cores do site | `login.html`, `registrar.html` |
 
 ## Como personalizar
-- **Destinos e cores do globo:** topo de `hero3d.js`, nas constantes `CORES`, `ORIGEM` e `DESTINOS` (nome, latitude, longitude). Use `lado: 'esq'` ou `lado: 'dir'` para afastar etiquetas de cidades próximas.
+- **Destinos do globo:** `destinos.js` (nome, país, categoria "Brasil"/"Internacional", latitude, longitude e link). Se existir no banco um destino com o mesmo nome, o globo usa automaticamente a página dele (`destino.php?id=...`), com foto, preço e botão Reservar; sem pacote, aparece "Pacote em breve".
+- **Cores dos pinos:** `CORES_CATEGORIA` no fim de `destinos.js` (Brasil = verde `--success`, Internacional = ciano `--accent`). Cores do globo em `CORES`, no topo de `globo3d.js`.
+- **Quantas rotas aparecem por vez:** `maxRotas: 6` em `hero3d.js`.
 - **Quantidade e cores das partículas:** topo de `particulas.js` (`QUANTIDADE`, `CORES`).
 - **Trocar o modelo 3D:** substitua `modelos/modelo.glb`, ou aponte outro arquivo no atributo `data-modelo-3d="..."` da `<div class="modelo-3d">`. Há modelos gratuitos em Sketchfab e Poly Pizza.
 - **Força da inclinação dos cards:** `MAX_GRAUS` em `cards-tilt.js`.
@@ -49,3 +51,5 @@ git reset --hard origin/antes-recursos && git push --force origin main   # ou or
 Arquivos fora desta pasta: `destino.php`, `comparar.php`, `embarque.php`, `favoritar.php`, `avaliar.php`, `aplicar_cupom.php`, `includes/Migracoes.php`, `includes/DestinoInfo.php` (coordenadas, moeda, fuso e melhor época de cada destino), `includes/layout.php`, `css/recursos.css` e `js/` (`ao-vivo.js`, `favoritos.js`, `comparar-selecao.js`, `reserva.js`, `embarque.js`, `barras3d.js`).
 
 Voltar para antes destes recursos: branch `antes-recursos` no GitHub.
+
+Globo com os 20 destinos, filtros Brasil/Internacional, legenda, card ao passar o mouse, arraste e rotas em rodízio: versão anterior no branch `antes-globo-destinos`. Nessa etapa as partículas passaram a aparecer só na página inicial e o modelo .glb ganhou uma seção na página do destino (a seção some se o arquivo não existir).

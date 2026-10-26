@@ -81,4 +81,4 @@ cabecalho('Minhas viagens');
     <?php endforeach; ?></div><?php endif; ?>
 </section>
 </main>
-<?php rodape(['assets/3d/particulas.js', 'assets/3d/mapa-viagens.js'], ['js/favoritos.js']); ?>
+<?php rodape(['assets/3d/mapa-viagens.js'], ['js/favoritos.js']); ?>

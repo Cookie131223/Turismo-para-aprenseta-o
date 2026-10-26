@@ -76,4 +76,4 @@ document.getElementById('compararForm').addEventListener('submit', function () {
   this.querySelector('[name=ids]').value = ids.filter(function (v, i) { return ids.indexOf(v) === i; }).join(',');
 });
 </script>
-<?php rodape(['assets/3d/particulas.js', 'assets/3d/cards-tilt.js', 'assets/3d/transicao.js'], ['js/ao-vivo.js', 'js/barras3d.js']); ?>
+<?php rodape(['assets/3d/cards-tilt.js', 'assets/3d/transicao.js'], ['js/ao-vivo.js', 'js/barras3d.js']); ?>

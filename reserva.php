@@ -72,4 +72,4 @@ cabecalho('Reservar ' . $d['nome']);
     </aside>
   </div>
 </main>
-<?php rodape(['assets/3d/particulas.js', 'assets/3d/rota3d.js'], ['js/reserva.js']); ?>
+<?php rodape(['assets/3d/rota3d.js'], ['js/reserva.js']); ?>

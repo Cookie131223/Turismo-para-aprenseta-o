@@ -5,11 +5,11 @@
 .hero-card.globo-3d .globo-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0;pointer-events:none;opacity:0;transition:opacity .8s ease}
 .hero-card.globo-3d.globo-pronto .globo-canvas{opacity:1}
 .hero-card.globo-3d::after{content:"";position:absolute;inset:auto 0 0 0;height:38%;background:linear-gradient(180deg,transparent,rgba(7,17,31,.92));z-index:1;pointer-events:none}
-.hero-card.globo-3d>div:not(.globo-popup){position:relative;z-index:2}
-.hero-card.globo-3d{min-height:480px}
-@media(max-width:980px){.hero-card.globo-3d{min-height:470px}}
-@media(max-width:720px){.hero-card.globo-3d{min-height:450px}}
-@media(max-width:480px){.hero-card.globo-3d{min-height:430px}}
+.hero-card.globo-3d>div:not(.globo-popup):not(.globo-topo):not(.globo-tooltip){position:relative;z-index:2}
+.hero-card.globo-3d{min-height:520px}
+@media(max-width:980px){.hero-card.globo-3d{min-height:510px}}
+@media(max-width:720px){.hero-card.globo-3d{min-height:500px}}
+@media(max-width:480px){.hero-card.globo-3d{min-height:480px}}
 
 /* ---------- cards inclinando ---------- */
 .card-tilt{position:relative;transform-style:preserve-3d;will-change:transform}
@@ -59,3 +59,35 @@
 @keyframes vooCruza{0%{transform:translate(0,0) rotate(-14deg) scale(.8)}100%{transform:translate(calc(100vw + 240px),-28vh) rotate(-14deg) scale(1.15)}}
 @keyframes vooRastro{0%{width:0}100%{width:115vw}}
 @keyframes vooEscurece{60%{background:rgba(7,17,31,.35)}100%{background:rgba(7,17,31,.75)}}
+
+/* ---------- globo do topo: filtros, legenda e card ao passar o mouse ---------- */
+.globo-topo{position:absolute;top:14px;left:14px;right:14px;z-index:3;display:flex;justify-content:space-between;align-items:center;gap:8px 12px;flex-wrap:wrap;pointer-events:none}
+.globo-topo>*{pointer-events:auto}
+.globo-filtros{display:flex;gap:6px}
+.globo-filtro{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(7,17,31,.72);backdrop-filter:blur(8px);color:var(--text);font:700 .8rem Inter,system-ui,sans-serif;cursor:pointer;transition:background .2s ease,border-color .2s ease}
+.globo-filtro i,.globo-legenda i{width:9px;height:9px;border-radius:50%;background:var(--cor);box-shadow:0 0 8px var(--cor);display:inline-block}
+.globo-filtro small{color:var(--muted);font-weight:700}
+.globo-filtro:hover{border-color:var(--cor)}
+.globo-filtro[aria-pressed="true"]{background:color-mix(in srgb,var(--cor) 22%,rgba(7,17,31,.85));border-color:var(--cor)}
+.globo-filtro:focus-visible{outline:2px solid var(--cor);outline-offset:2px}
+.globo-legenda{display:flex;gap:10px;flex-wrap:wrap;font-size:.72rem;color:var(--muted);padding:5px 10px;border-radius:999px;background:rgba(7,17,31,.6)}
+.globo-legenda span{display:inline-flex;align-items:center;gap:5px}
+.globo-legenda .origem i{background:transparent;border:2px solid var(--cor);box-shadow:none;width:8px;height:8px}
+.globo-tooltip{position:absolute;z-index:5;transform:translate(-50%,calc(-100% - 16px));padding:8px 12px;border-radius:12px;background:rgba(15,29,46,.96);border:1px solid var(--cor,#39d0ff);box-shadow:0 12px 30px rgba(0,0,0,.4);pointer-events:none;white-space:nowrap;display:grid;text-align:center}
+.globo-tooltip strong{font-size:.9rem}.globo-tooltip span{font-size:.75rem;color:var(--muted)}
+.globo-hero .globo-popup{top:62px}
+.globo-popup.sem-foto{width:min(240px,calc(100% - 28px))}
+.globo-popup-cat{display:inline-flex;align-items:center;gap:6px;margin:0 0 4px;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--cor)}
+.globo-popup-cat::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--cor)}
+.globo-popup .btn.desativado{opacity:.6;cursor:default}
+@media(max-width:720px){
+  .globo-hero .globo-popup{top:auto;bottom:12px}
+  .globo-popup.sem-foto{display:block;width:auto}
+  .globo-legenda{font-size:.68rem}
+}
+
+/* ---------- seção do modelo na página do destino ---------- */
+.modelo-secao{margin-top:22px}
+.modelo-secao-grade{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:center}
+.modelo-3d.modelo-grande{height:260px;max-width:none;margin:0;border-radius:18px;background:radial-gradient(circle at 50% 55%,rgba(57,208,255,.12),transparent 65%)}
+@media(max-width:720px){.modelo-secao-grade{grid-template-columns:1fr}.modelo-3d.modelo-grande{height:210px}}

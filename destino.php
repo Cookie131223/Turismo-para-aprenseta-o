@@ -94,6 +94,15 @@ cabecalho($d['nome']);
     </div>
   </section>
 
+  <section class="panel modelo-secao" data-modelo-secao>
+    <div class="modelo-secao-grade">
+      <div class="modelo-3d modelo-grande" data-modelo-3d="assets/3d/modelos/modelo.glb" aria-label="Avião da Tripora em 3D"></div>
+      <div><p class="eyebrow">Embarque em 3D</p><h2>Seu voo até <?= h($d['nome']) ?></h2>
+        <p class="muted">Arraste para girar o avião. <?php if ($info['voo_horas'] !== null): ?>Saindo de São Paulo (GRU), são cerca de <?= DestinoInfo::vooTexto($info['voo_horas']) ?> de voo e <?= number_format($info['km'], 0, ',', '.') ?> km.<?php endif; ?></p>
+        <a class="btn" href="reserva.php?destino_id=<?= $id ?>">Reservar este voo</a></div>
+    </div>
+  </section>
+
   <section class="panel" id="avaliacoes">
     <div class="section-head"><div><p class="eyebrow">Avaliações</p><h2>O que os viajantes dizem</h2></div>
       <p class="estrelas grande"><?= estrelas($media) ?> <span class="muted"><?= $avaliacoes ? number_format($media, 1, ',', '') : '—' ?></span></p></div>
@@ -118,4 +127,4 @@ cabecalho($d['nome']);
     </div>
   </section>
 </main>
-<?php rodape(['assets/3d/particulas.js', 'assets/3d/panorama.js', 'assets/3d/rota3d.js', 'assets/3d/transicao.js'], ['js/ao-vivo.js', 'js/favoritos.js']); ?>
+<?php rodape(['assets/3d/panorama.js', 'assets/3d/rota3d.js', 'assets/3d/modelo.js', 'assets/3d/transicao.js'], ['js/ao-vivo.js', 'js/favoritos.js']); ?>

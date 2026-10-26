@@ -58,9 +58,10 @@ function iniciar(el, arquivo) {
   }, p => {
     if (p.total) aviso.textContent = 'Carregando 3D… ' + Math.round(p.loaded / p.total * 100) + '%';
   }, () => {
-    aviso.textContent = '';
-    el.classList.add('modelo-sem-3d');
-    canvas.remove();
+    // arquivo não encontrado ou inválido: esconde a seção inteira, sem mensagem de erro
+    const secao = el.closest('[data-modelo-secao]') || el;
+    secao.hidden = true;
+    renderer.dispose();
   });
 
   criarLaco(el, () => { controles.update(); renderer.render(cena, camera); });
