@@ -65,6 +65,16 @@ UPDATE clientes SET role = 'admin' WHERE email = 'SEU_EMAIL';
 ```
 3. Saia e entre novamente. O link **Admin** aparecerá no menu.
 
+## Online na Vercel (grátis)
+O site roda na Vercel com o runtime PHP da comunidade (`vercel-php`) e banco Postgres no Supabase.
+
+- `vercel.json` manda todas as requisições para `api/index.php`, que funciona como o `php -S` do Dockerfile (serve as páginas e arquivos) e esconde arquivos como `schema.sql`.
+- `api/php.ini` carrega `includes/sessao_banco.php` antes de cada página: as sessões de login ficam na tabela `sessoes`, porque a Vercel não guarda arquivos entre acessos.
+- O banco é criado com `schema_postgres.sql`.
+- Variáveis na Vercel: `DATABASE_URL=postgresql://usuario:senha@host:5432/postgres?sslmode=require` e `DB_SCHEMA=tripora`.
+
+O código continua funcionando com MySQL (Docker/Railway): o driver é escolhido pela URL do banco.
+
 ## Colocar online no Railway
 O Railway aceita deploy direto do GitHub e também oferece MySQL. O projeto já possui `Dockerfile`.
 

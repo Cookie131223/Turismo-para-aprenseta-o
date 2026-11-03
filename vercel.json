@@ -1,0 +1,17 @@
+{
+  "regions": [
+    "gru1"
+  ],
+  "functions": {
+    "api/index.php": {
+      "runtime": "vercel-php@0.7.4",
+      "excludeFiles": "{.git/**,node_modules/**,Dockerfile,README.md,schema.sql,schema_postgres.sql,.env.example,vercel.json,.vercelignore}"
+    }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.php"
+    }
+  ]
+}
