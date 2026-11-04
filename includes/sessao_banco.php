@@ -55,3 +55,6 @@ if (session_status() === PHP_SESSION_NONE) {
     ini_set('session.cookie_samesite', 'Lax');
     session_set_save_handler(new SessaoBanco(), true);
 }
+
+// Modo vitrine do portfólio (/?vitrine): ver includes/vitrine.php
+require_once __DIR__ . '/vitrine.php';
